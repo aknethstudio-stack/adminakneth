@@ -1,0 +1,52 @@
+bug:
+  - 'src/bugs/**/*'
+  - any-of: ['fix', 'bugfix']
+
+documentation:
+  - '**.md'
+  - 'docs/**/*'
+
+configuration:
+  - 'package.json'
+  - 'package-lock.json'
+  - 'npm-shrinkwrap.json'
+  - 'yarn.lock'
+  - 'pnpm-lock.yaml'
+  - 'tsconfig.json'
+  - 'next.config.js'
+  - 'tailwind.config.ts'
+  - 'postcss.config.js'
+  - 'eslint.config.mjs'
+  - '.prettierrc'
+  - '.prettierignore'
+  - '.editorconfig'
+  - '.gitattributes'
+  - '.gitignore'
+  - '.releaserc.json'
+  - 'commitlint.config.js'
+  - '.husky/**/*'
+  - '.github/**/*'
+
+dependencies:
+  - 'package.json'
+  - 'package-lock.json'
+  - 'npm-shrinkwrap.json'
+  - 'yarn.lock'
+  - 'pnpm-lock.yaml'
+
+tests:
+  - 'src/**/*.test.{js,jsx,ts,tsx}'
+  - 'src/**/*.spec.{js,jsx,ts,tsx}'
+  - 'tests/**/*'
+
+refactor:
+  - 'src/**/*'
+  - any-of: ['refactor']
+
+chore:
+  - '.github/**/*'
+  - '.husky/**/*'
+  - 'package.json'
+  - 'yarn.lock'
+  - 'pnpm-lock.yaml'
+  - any-of: ['chore']
