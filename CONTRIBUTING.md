@@ -26,7 +26,7 @@ Have an idea for a new feature? Great! Please open a discussion in our issue tra
 
 1.  **Clone the repository:**
     ```bash
-    git clone [YOUR_REPOSITORY_URL]
+    git clone github.com/aknethstudio-stack/adminakneth
     ```
 2.  **Create a new branch:**
     Name your branch according to convention (e.g., `feature/your-feature-name` or `bugfix/bug-description`).

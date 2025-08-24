@@ -15,7 +15,7 @@ We take security vulnerabilities seriously. If you discover a security vulnerabi
 
 **Please do NOT open a public issue.**
 
-Instead, please report it by sending an email to [YOUR_SECURITY_CONTACT_EMAIL_HERE].
+Instead, please report it by sending an email to akneth.studio+security@gmail.com.
 
 When reporting, please include:
 
@@ -25,6 +25,6 @@ When reporting, please include:
 - Any potential impact of the vulnerability.
 - Your contact information (optional, but helpful for follow-up).
 
-We will acknowledge your report within [X] business days and will provide a more detailed response within [Y] business days. We will keep you informed of the progress towards a fix and will announce the fix publicly once it's available.
+We will acknowledge your report within 1-3 business days and will provide a more detailed response within 7-14 business days. We will keep you informed of the progress towards a fix and will announce the fix publicly once it's available.
 
 We appreciate your efforts to responsibly disclose security vulnerabilities.
