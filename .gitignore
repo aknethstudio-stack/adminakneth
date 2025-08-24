@@ -18,6 +18,7 @@
 # Misc
 .DS_Store
 *.pem
+temp/
 
 # Swap files
 *.swp
