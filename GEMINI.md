@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/). The project appears to be a web-based admin panel.
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It uses the **App Router**, [React](https://reactjs.org/), and [TypeScript](https://www.typescriptlang.org/). The project appears to be a web-based admin panel.
 
 **Key Technologies:**
 
