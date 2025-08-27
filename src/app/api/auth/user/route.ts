@@ -1,27 +1,11 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@/lib/supabase/server'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // Server-side admin emails validation (secure, not exposed to client)
 const ALLOWED_ADMIN_EMAILS = process.env.ALLOWED_ADMIN_EMAILS?.split(',') || []
 
-export async function GET(request: NextRequest) {
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
-        },
-        set(_name: string, _value: string, _options: CookieOptions) {
-          // Cookie will be set in the response
-        },
-        remove(_name: string, _options: CookieOptions) {
-          // Cookie will be removed in the response
-        },
-      },
-    },
-  )
+export async function GET(_request: NextRequest) {
+  const supabase = await createClient()
 
   try {
     const {

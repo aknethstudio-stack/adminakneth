@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { AuthUser, onAuthStateChange, getCurrentUser } from './auth'
+import { AuthUser, onAuthStateChange, getCurrentUser, signOut } from './auth'
 
 interface AuthContextType {
   user: AuthUser | null
@@ -49,8 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const handleSignOut = async () => {
     try {
-      const { signOut: supabaseSignOut } = await import('./auth')
-      await supabaseSignOut()
+      await signOut()
       setUser(null)
     } catch (error) {
       console.error('Error signing out:', error)
