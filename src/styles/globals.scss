@@ -1,8 +1,8 @@
-@import 'variables';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@use 'variables';
+@import 'tailwindcss';
 
 body {
   font-family: var(--font-poppins), sans-serif;
+  background-color: var(--color-body-background);
+  color: var(--color-body-text);
 }

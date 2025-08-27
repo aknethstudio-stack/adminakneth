@@ -1,4 +1,3 @@
-// eslint.config.js
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import react from 'eslint-plugin-react'
@@ -10,7 +9,7 @@ import prettierConfig from 'eslint-config-prettier'
 export default tseslint.config(
   {
     // Global ignores
-    ignores: ['node_modules/', '.next/', 'out/', 'build/'],
+    ignores: ['node_modules/', '.next/', 'out/', 'build/', 'next-env.d.ts'],
   },
   {
     // Base configuration for all files
@@ -33,6 +32,18 @@ export default tseslint.config(
   },
   // TypeScript configurations
   ...tseslint.configs.recommended,
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
   // React configurations
   {
     plugins: { react },

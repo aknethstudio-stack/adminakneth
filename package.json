@@ -21,21 +21,26 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:turbo": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
     "release": "dotenv -e .env -- npx semantic-release",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "format": "prettier --write ."
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.56.0",
+    "@supabase/ssr": "^0.7.0",
+    "@tailwindcss/postcss": "^4.1.12",
     "next": "^15.5.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-icons": "^5.5.0",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.40.0",
+    "typescript-eslint": "^8.41.0",
     "zod": "^4.1.1"
   },
   "devDependencies": {
@@ -49,6 +54,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.3.0",
+    "@types/react": "19.1.11",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "autoprefixer": "^10.4.21",

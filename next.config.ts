@@ -1,16 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
 
+  // Web app configuration
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+
+  // Security headers for web deployment
   async headers() {
     const ContentSecurityPolicy = `
       default-src 'self';
       script-src 'self' 'unsafe-eval' 'unsafe-inline';
       style-src 'self' 'unsafe-inline';
-      img-src 'self' data:;
+      img-src 'self' data: https:;
       font-src 'self';
-      connect-src 'self';
+      connect-src 'self' https://*.supabase.co;
       media-src 'self';
       object-src 'none';
       base-uri 'self';
@@ -59,10 +69,6 @@ const nextConfig = {
         headers: securityHeaders,
       },
     ]
-  },
-
-  images: {
-    remotePatterns: [],
   },
 }
 
