@@ -1,15 +1,6 @@
 'use client'
 
 import React, { useState, useEffect, JSX } from 'react'
-import { createClient } from '@supabase/supabase-js'
-
-// Inicjalizacja klienta Supabase dla interakcji z bazą danych
-// Używamy zmiennych publicznych, ale pamiętaj, że klucz service_role jest potrzebny po stronie serwera!
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
 export default function Settings(): JSX.Element {
   // Stany dla każdego pola ustawień
   const [siteName, setSiteName] = useState<string>('Admin Panel')
@@ -34,11 +25,14 @@ export default function Settings(): JSX.Element {
     const fetchSettings = async (): Promise<void> => {
       setLoading(true)
       try {
-        const { data, error } = await supabase
-          .from('app_settings')
-          .select('name, value')
-
-        if (error) throw error
+        const response = await fetch('/api/settings') // Fetch from API route
+        if (!response.ok) {
+          const errData = await response.json()
+          throw new Error(
+            errData.message || 'Nieznany błąd podczas pobierania ustawień.',
+          )
+        }
+        const data = await response.json()
 
         if (data) {
           const settingsMap = data.reduce(
@@ -60,10 +54,10 @@ export default function Settings(): JSX.Element {
           setSessionTimeout(parseInt(settingsMap.session_timeout || '30'))
           setRequireTwoFactor(settingsMap.require_two_factor === 'true')
           setLogSecurityEvents(settingsMap.log_security_events === 'true')
-          setAdminEmails(settingsMap.allowed_admin_emails || '') // Ustawienie pobranych adminEmails
+          setAdminEmails(settingsMap.allowed_admin_emails || '')
           setColorScheme(settingsMap.color_scheme || 'Default')
           setFontSize(settingsMap.font_size || 'Medium')
-          setApiKey(settingsMap.api_key || '••••••••••••••••') // API Key może być tylko wyświetlany, nie edytowany
+          setApiKey(settingsMap.api_key || '••••••••••••••••')
           setRateLimit(parseInt(settingsMap.rate_limit || '1000'))
         }
       } catch (err: unknown) {
@@ -128,31 +122,26 @@ export default function Settings(): JSX.Element {
   }
 
   return (
-    <div className="p-8">
-      <h1
-        className="text-3xl font-bold mb-6"
-        style={{ color: 'var(--color-body-text)' }}
-      >
-        Ustawienia
-      </h1>
+    <div className="container mx-auto py-8 max-w-4xl">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Ustawienia</h1>
 
-      {loading && (
-        <p style={{ color: 'var(--color-body-text)' }}>Ładowanie ustawień...</p>
+      {loading && <p className="text-gray-600 mb-4">Ładowanie ustawień...</p>}
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+          {error}
+        </div>
       )}
-      {error && <p style={{ color: '#ef4444' }}>{error}</p>}
-      {message && <p style={{ color: '#10b981' }}>{message}</p>}
+      {message && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+          {message}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* General Settings */}
-          <div
-            className="p-6 rounded-lg shadow-md"
-            style={{ backgroundColor: 'var(--color-light)' }}
-          >
-            <h2
-              className="text-xl font-semibold mb-4"
-              style={{ color: 'var(--color-body-text)' }}
-            >
+          <div className="p-6 rounded-lg shadow-md bg-white">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Ustawienia Ogólne
             </h2>
 
@@ -160,8 +149,7 @@ export default function Settings(): JSX.Element {
               <div>
                 <label
                   htmlFor="siteName"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Nazwa Strony
                 </label>
@@ -170,19 +158,14 @@ export default function Settings(): JSX.Element {
                   type="text"
                   value={siteName}
                   onChange={(e) => setSiteName(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Opis
                 </label>
@@ -191,43 +174,27 @@ export default function Settings(): JSX.Element {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
 
               <div>
-                <label className="flex items-center">
+                <label className="flex items-center text-gray-700">
                   <input
                     type="checkbox"
                     checked={enableNotifications}
                     onChange={(e) => setEnableNotifications(e.target.checked)}
-                    className="mr-2"
-                    style={{ accentColor: 'var(--color-primary)' }}
+                    className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                   />
-                  <span
-                    className="text-sm"
-                    style={{ color: 'var(--color-body-text)' }}
-                  >
-                    Włącz powiadomienia
-                  </span>
+                  <span className="text-sm">Włącz powiadomienia</span>
                 </label>
               </div>
             </div>
           </div>
 
           {/* Security Settings */}
-          <div
-            className="p-6 rounded-lg shadow-md"
-            style={{ backgroundColor: 'var(--color-light)' }}
-          >
-            <h2
-              className="text-xl font-semibold mb-4"
-              style={{ color: 'var(--color-body-text)' }}
-            >
+          <div className="p-6 rounded-lg shadow-md bg-white">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Ustawienia Bezpieczeństwa
             </h2>
 
@@ -235,8 +202,7 @@ export default function Settings(): JSX.Element {
               <div>
                 <label
                   htmlFor="sessionTimeout"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Czas wygaśnięcia sesji (minuty)
                 </label>
@@ -245,45 +211,33 @@ export default function Settings(): JSX.Element {
                   type="number"
                   value={sessionTimeout}
                   onChange={(e) => setSessionTimeout(Number(e.target.value))}
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
 
               <div>
-                <label className="flex items-center">
+                <label className="flex items-center text-gray-700">
                   <input
                     type="checkbox"
                     checked={requireTwoFactor}
                     onChange={(e) => setRequireTwoFactor(e.target.checked)}
-                    className="mr-2"
-                    style={{ accentColor: 'var(--color-primary)' }}
+                    className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                   />
-                  <span
-                    className="text-sm"
-                    style={{ color: 'var(--color-body-text)' }}
-                  >
+                  <span className="text-sm">
                     Wymagaj dwuskładnikowego uwierzytelniania
                   </span>
                 </label>
               </div>
 
               <div>
-                <label className="flex items-center">
+                <label className="flex items-center text-gray-700">
                   <input
                     type="checkbox"
                     checked={logSecurityEvents}
                     onChange={(e) => setLogSecurityEvents(e.target.checked)}
-                    className="mr-2"
-                    style={{ accentColor: 'var(--color-primary)' }}
+                    className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                   />
-                  <span
-                    className="text-sm"
-                    style={{ color: 'var(--color-body-text)' }}
-                  >
+                  <span className="text-sm">
                     Loguj zdarzenia bezpieczeństwa
                   </span>
                 </label>
@@ -293,8 +247,7 @@ export default function Settings(): JSX.Element {
               <div>
                 <label
                   htmlFor="adminEmails"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Dozwolone e-maile administratorów (rozdzielone przecinkami)
                 </label>
@@ -303,11 +256,7 @@ export default function Settings(): JSX.Element {
                   value={adminEmails}
                   onChange={(e) => setAdminEmails(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:focus:border-indigo-500 sm:text-sm"
                   placeholder="admin1@example.com, admin2@example.com"
                 />
               </div>
@@ -315,14 +264,8 @@ export default function Settings(): JSX.Element {
           </div>
 
           {/* Theme Settings */}
-          <div
-            className="p-6 rounded-lg shadow-md"
-            style={{ backgroundColor: 'var(--color-light)' }}
-          >
-            <h2
-              className="text-xl font-semibold mb-4"
-              style={{ color: 'var(--color-body-text)' }}
-            >
+          <div className="p-6 rounded-lg shadow-md bg-white">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Ustawienia Motywu
             </h2>
 
@@ -330,8 +273,7 @@ export default function Settings(): JSX.Element {
               <div>
                 <label
                   htmlFor="colorScheme"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Schemat kolorów
                 </label>
@@ -339,11 +281,7 @@ export default function Settings(): JSX.Element {
                   id="colorScheme"
                   value={colorScheme}
                   onChange={(e) => setColorScheme(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option>Default</option>
                   <option>Dark Mode</option>
@@ -354,8 +292,7 @@ export default function Settings(): JSX.Element {
               <div>
                 <label
                   htmlFor="fontSize"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Rozmiar czcionki
                 </label>
@@ -363,11 +300,7 @@ export default function Settings(): JSX.Element {
                   id="fontSize"
                   value={fontSize}
                   onChange={(e) => setFontSize(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option>Small</option>
                   <option>Medium</option>
@@ -378,14 +311,8 @@ export default function Settings(): JSX.Element {
           </div>
 
           {/* API Settings */}
-          <div
-            className="p-6 rounded-lg shadow-md"
-            style={{ backgroundColor: 'var(--color-light)' }}
-          >
-            <h2
-              className="text-xl font-semibold mb-4"
-              style={{ color: 'var(--color-body-text)' }}
-            >
+          <div className="p-6 rounded-lg shadow-md bg-white">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Ustawienia API
             </h2>
 
@@ -393,8 +320,7 @@ export default function Settings(): JSX.Element {
               <div>
                 <label
                   htmlFor="apiKey"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Klucz API
                 </label>
@@ -403,19 +329,14 @@ export default function Settings(): JSX.Element {
                   type="password"
                   value={apiKey}
                   readOnly // Klucz API nie powinien być edytowalny z poziomu klienta
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="rateLimit"
-                  className="block text-sm font-medium mb-2"
-                  style={{ color: 'var(--color-body-text)' }}
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Limit Rate (żądania/godzinę)
                 </label>
@@ -424,11 +345,7 @@ export default function Settings(): JSX.Element {
                   type="number"
                   value={rateLimit}
                   onChange={(e) => setRateLimit(Number(e.target.value))}
-                  className="w-full px-3 py-2 border rounded-md"
-                  style={{
-                    borderColor: 'var(--color-secondary)',
-                    backgroundColor: 'var(--color-body-background)',
-                  }}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -440,12 +357,7 @@ export default function Settings(): JSX.Element {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 rounded font-medium transition-all duration-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              backgroundColor: 'var(--color-primary)',
-              color: 'var(--color-dark)',
-              borderRadius: 'var(--border-radius-nav-pills)',
-            }}
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Zapisywanie...' : 'Zapisz Zmiany'}
           </button>
