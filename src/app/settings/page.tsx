@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, JSX } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
 // Inicjalizacja klienta Supabase dla interakcji z bazą danych
@@ -10,28 +10,28 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-export default function Settings() {
+export default function Settings(): JSX.Element {
   // Stany dla każdego pola ustawień
-  const [siteName, setSiteName] = useState('Admin Panel')
-  const [description, setDescription] = useState(
+  const [siteName, setSiteName] = useState<string>('Admin Panel')
+  const [description, setDescription] = useState<string>(
     'Panel administracyjny AKNETH Studio',
   )
-  const [enableNotifications, setEnableNotifications] = useState(true)
-  const [sessionTimeout, setSessionTimeout] = useState(30)
-  const [requireTwoFactor, setRequireTwoFactor] = useState(false)
-  const [logSecurityEvents, setLogSecurityEvents] = useState(false)
-  const [adminEmails, setAdminEmails] = useState('') // Nowe pole dla adminEmails
-  const [colorScheme, setColorScheme] = useState('Default')
-  const [fontSize, setFontSize] = useState('Medium')
-  const [apiKey, setApiKey] = useState('••••••••••••••••') // Nie edytujemy, ale zachowujemy stan
-  const [rateLimit, setRateLimit] = useState(1000)
-  const [loading, setLoading] = useState(true)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
+  const [enableNotifications, setEnableNotifications] = useState<boolean>(true)
+  const [sessionTimeout, setSessionTimeout] = useState<number>(30)
+  const [requireTwoFactor, setRequireTwoFactor] = useState<boolean>(false)
+  const [logSecurityEvents, setLogSecurityEvents] = useState<boolean>(false)
+  const [adminEmails, setAdminEmails] = useState<string>('') // Nowe pole dla adminEmails
+  const [colorScheme, setColorScheme] = useState<string>('Default')
+  const [fontSize, setFontSize] = useState<string>('Medium')
+  const [apiKey, setApiKey] = useState<string>('••••••••••••••••') // Nie edytujemy, ale zachowujemy stan
+  const [rateLimit, setRateLimit] = useState<number>(1000)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [message, setMessage] = useState<string>('')
+  const [error, setError] = useState<string>('')
 
   useEffect(() => {
     // Funkcja do pobierania ustawień z bazy danych
-    const fetchSettings = async () => {
+    const fetchSettings = async (): Promise<void> => {
       setLoading(true)
       try {
         const { data, error } = await supabase
@@ -42,7 +42,10 @@ export default function Settings() {
 
         if (data) {
           const settingsMap = data.reduce(
-            (acc, item) => {
+            (
+              acc: Record<string, string>,
+              item: { name: string; value: string },
+            ) => {
               acc[item.name] = item.value
               return acc
             },
@@ -75,7 +78,9 @@ export default function Settings() {
     fetchSettings()
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault()
     setLoading(true)
     setMessage('')
@@ -239,7 +244,7 @@ export default function Settings() {
                   id="sessionTimeout"
                   type="number"
                   value={sessionTimeout}
-                  onChange={(e) => setSessionTimeout(parseInt(e.target.value))}
+                  onChange={(e) => setSessionTimeout(Number(e.target.value))}
                   className="w-full px-3 py-2 border rounded-md"
                   style={{
                     borderColor: 'var(--color-secondary)',
@@ -418,7 +423,7 @@ export default function Settings() {
                   id="rateLimit"
                   type="number"
                   value={rateLimit}
-                  onChange={(e) => setRateLimit(parseInt(e.target.value))}
+                  onChange={(e) => setRateLimit(Number(e.target.value))}
                   className="w-full px-3 py-2 border rounded-md"
                   style={{
                     borderColor: 'var(--color-secondary)',
