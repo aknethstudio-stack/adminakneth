@@ -50,8 +50,13 @@ npm run format
 - **TypeScript:** The project uses TypeScript with strict type checking enabled. Refer to `tsconfig.json` for detailed compiler options.
 - **Styling:** The project uses Tailwind CSS for utility-first styling and Sass for pre-processing CSS. Global styles are located in `src/styles/globals.scss`.
 - **Linting & Formatting:** ESLint (using the new flat config format in `eslint.config.mjs`) is used for code quality, and Prettier is used for automatic code formatting. These are enforced via Husky pre-commit hooks using `lint-staged`.
-- **Project Structure:** Source code is organized within the `src/` directory. Path aliases (e.g., `@/components`) are configured in `tsconfig.json` for easier imports.
+- **Project Structure:** Source code is organized within the `src/` directory, following a clear and modular structure:
+  - `src/app/`: Contains Next.js App Router pages and API routes.
+  - `src/components/`: Houses reusable React UI components.
+  - `src/lib/`: Stores utility functions, authentication logic, and Supabase client configurations.
+  - `src/styles/`: Holds global styles and Sass variables.
+    Path aliases (e.g., `@/components`) are configured in `tsconfig.json` for easier imports.
 - **License:** The project is licensed under Apache 2.0.
 - **Editor Configuration:** `.editorconfig` is used to maintain consistent coding styles across different editors.
 - **Git Configuration:** `.gitattributes` is used to ensure consistent line endings and file handling within the Git repository.
-- **Contribution Guidelines:** (Not specified)
+- **Contribution Guidelines:** Detailed contribution guidelines, including information on Git Flow for branch management, are available in the `CONTRIBUTING.md` file.

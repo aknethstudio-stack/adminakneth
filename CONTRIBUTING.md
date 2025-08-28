@@ -29,13 +29,20 @@ Have an idea for a new feature? Great! Please open a discussion in our issue tra
     git clone github.com/aknethstudio-stack/adminakneth
     ```
 2.  **Create a new branch:**
-    Name your branch according to convention (e.g., `feature/your-feature-name` or `bugfix/bug-description`).
+    This project uses Git Flow. Please name your branches according to these conventions:
+    - `main`: The stable production branch.
+    - `develop`: The integration branch for upcoming features.
+    - `feature/<feature-name>`: For new features.
+    - `bugfix/<bug-description>`: For bug fixes.
+    - `release/<version>`: For preparing new releases.
+    - `hotfix/<version>`: For urgent fixes to `main`.
+    - `support/<branch-name>`: For long-term support branches.
     ```bash
     git checkout -b your-branch-name
     ```
 3.  **Make your changes:** Remember to adhere to coding and formatting conventions (ESLint, Prettier).
 4.  **Test:** Ensure your changes do not introduce new bugs and that existing tests pass.
-5.  **Commit your changes:** Write clear and concise commit messages.
+5.  **Commit your changes:** Write clear and concise commit messages following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. Your commit messages will be validated by `commitlint` via a Husky `commit-msg` hook.
     ```bash
     git commit -m "feat: Add new feature X"
     ```
