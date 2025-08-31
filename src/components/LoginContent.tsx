@@ -303,7 +303,9 @@ export default function LoginContent() {
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                }}
                 className="w-full px-3 py-2 border rounded-md transition-colors focus:outline-none focus:ring-2"
                 style={{
                   borderColor: 'var(--color-secondary)',
