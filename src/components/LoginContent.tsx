@@ -90,7 +90,7 @@ export default function LoginContent() {
       }
 
       setSuccess('Login successful! Redirecting...')
-      setTimeout(() => router.push('/dashboard'), 1000)
+      setTimeout(() => { router.push('/dashboard'); }, 1000)
     } catch {
       setError('An unexpected error occurred. Please try again.')
     } finally {

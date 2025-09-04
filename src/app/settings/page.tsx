@@ -157,7 +157,7 @@ export default function Settings(): JSX.Element {
                   id="siteName"
                   type="text"
                   value={siteName}
-                  onChange={(e) => setSiteName(e.target.value)}
+                  onChange={(e) => { setSiteName(e.target.value); }}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
@@ -172,7 +172,7 @@ export default function Settings(): JSX.Element {
                 <textarea
                   id="description"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => { setDescription(e.target.value); }}
                   rows={3}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />

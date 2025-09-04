@@ -13,7 +13,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "github.com:aknethstudio-stack/adminakneth"
+    "url": "github.com/aknethstudio-stack/adminakneth"
   },
   "engines": {
     "node": "22.x",

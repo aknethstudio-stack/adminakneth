@@ -236,7 +236,7 @@ function Header() {
           {/* Mobile Hamburger Button */}
           <div className="md:hidden" ref={menuRef}>
             <button
-              onClick={() => setShowMenu(!showMenu)}
+              onClick={() => { setShowMenu(!showMenu); }}
               className="p-2 transition-colors"
               style={{
                 color: 'var(--color-light)',
@@ -395,7 +395,7 @@ function Header() {
                             textAlign: 'left',
                           }}
                           onMouseOver={(e) =>
-                            handleAuthButtonInteraction(e, true)
+                            { handleAuthButtonInteraction(e, true); }
                           }
                           onMouseOut={(e) =>
                             handleAuthButtonInteraction(e, false)

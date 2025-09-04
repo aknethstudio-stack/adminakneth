@@ -50,3 +50,7 @@ next-env.d.ts
 
 # Gemini cache
 .gemini/
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
